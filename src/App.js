@@ -1,9 +1,12 @@
-import { useState } from "react";
+import React from 'react';
+import { useDispatch } from "react-redux";
 import "./App.css";
-import NBandits from "./NBandits"
+import Bandits from "./features/bandit/Bandits";
+import { changeN, setAllPlaying } from "./features/bandit/banditSlice";
+import Button from './features/bandit/Button';
 
 function App() {
-  const [nBandits, setnBandits] = useState(2);
+  const dispatch = useDispatch();
   return (
     <div className="container mx-auto px-8">
       <h1 className="text-xl font-semibold">Learning with Bandits!</h1>
@@ -15,11 +18,12 @@ function App() {
           min={2}
           max={10}
           step={1}
-          defaultValue={nBandits}
-          onChange={(e) => setnBandits(e.target.value)}
+          defaultValue={2}
+          onChange={(e) => dispatch(changeN(e.target.value))}
         />
       </label>
-      <NBandits N={nBandits} />
+      <Button onClick={() => dispatch(setAllPlaying())} color="yellow">Play/Pause all</Button>
+      <Bandits />
     </div>
   );
 }

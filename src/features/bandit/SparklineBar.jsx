@@ -2,7 +2,7 @@ import React from "react";
 import { scaleLinear } from "d3";
 
 function SparklineBar(props) {
-  const { data, width = 160, height = 30, color = "red" } = props;
+  const { data, width = 160, height = 30 } = props;
   const N = data.length;
   const bar_width = N === 0 ? 0 : (width - N) / N;
   const xScale = scaleLinear().domain([0, N]).range([0, width]);
@@ -22,7 +22,7 @@ function SparklineBar(props) {
                 height={yScale(d)}
                 y={height - yScale(d)}
                 width={bar_width}
-                fill={color}
+                fill={d > 0 ? "green" : "red"}
               />
             );
           })}
