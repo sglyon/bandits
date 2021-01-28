@@ -18,15 +18,11 @@ function Histogram(props) {
 
   const color = "#374151";
 
-  // apply axis in effect
-  useEffect(() => {
-    if (!axisContainer.current || data.length === 0) {
-      return;
-    }
+  if (axisContainer.current && data.length > 0) {
     select(axisContainer.current)
       .attr("transform", `translate(0,${height})`)
       .call(axisBottom(x).ticks(6));
-  }, [data, width, height, x]);
+  }
 
   if (data.length === 0) {
     return <svg width={width} height={height + 20}></svg>;
