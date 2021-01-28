@@ -3,7 +3,7 @@ import Indicator from "./Indicator";
 import SparklineBar from "./SparklineBar";
 import Histogram from "./Histogram";
 import useInterval from "../../useInterval";
-import Button from "./Button";
+import Button from "../../Button";
 
 /**
  * @typedef BanditProps
@@ -42,19 +42,22 @@ function Bandit(props) {
       className="flex flex-col items-center border-2 border-dashed border-red-200 m-1"
       style={{ width: 200 }}
     >
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-around">
+        <div className="flex w-1/2 justify-around">
+          <span className="w-1/2 text-purple-700 font-medium">mu</span>
+          <input
+            type="number"
+            className="w-1/2 border border-purple-500 p-0.5"
+            name="mu"
+            id="mu"
+            defaultValue={mu}
+            step={0.1}
+            min={-4}
+            max={4}
+            onChange={(e) => onSetMu(e.target.value)}
+          />
+        </div>
         <Indicator number={number} />
-        <input
-          className="w-1/3"
-          type="number"
-          name="mu"
-          id="mu"
-          defaultValue={props.mu}
-          step={0.1}
-          min={-4}
-          max={4}
-          onChange={e => onSetMu(e.target.value)}
-        />
       </div>
       <Button onClick={onPull}>Pull</Button>
       <Button onClick={onPlay} color="green">

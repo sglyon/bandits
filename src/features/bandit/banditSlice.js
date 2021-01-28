@@ -19,13 +19,15 @@ import { randomNormal } from "d3";
  * @prop {boolean} hidden
  */
 
+ const randomMu = () => Math.round(10 * (5 * (Math.random() - 0.5))) / 10
+
 /**
  *
  * @param {NewBanditSettings} settings
  * @returns {BanditData}
  */
 const createNewBandit = (settings) => {
-  const { id, mu = 2, hidden = true } = settings;
+  const { id, mu = randomMu(), hidden = true } = settings;
   return {
     id,
     mu,
@@ -72,19 +74,32 @@ const playBandit = (bandit) => {
   };
 };
 
+/**
+ *
+ * @param {BanditData} bandit
+ * @param {number} id
+ * @returns {BanditData}
+ */
+const resetBandit = (bandit, id) => {
+  const newBandit = createNewBandit({ id });
+  newBandit.hidden = bandit.hidden;
+  newBandit.mu = bandit.mu;
+  return newBandit;
+};
+
 export const banditSlice = createSlice({
   name: "bandit",
-  initialState: initialState(2),
+  initialState: initialState(5),
   reducers: {
     changeN: (state, action) => {
       const N = +action.payload;
       for (let id = 0; id < 10; id++) {
         state.bandits[id].hidden = id >= N;
       }
-      state.N = N
+      state.N = N;
     },
     setOneMu: (state, action) => {
-      const {id, mu} = action.payload;
+      const { id, mu } = action.payload;
       state.bandits[id].mu = +mu;
     },
     pullOne: (state, action) => {
@@ -97,13 +112,12 @@ export const banditSlice = createSlice({
     },
     resetOne: (state, action) => {
       const id = action.payload;
-      const newBandit = createNewBandit({ id });
-      newBandit.hidden = state.bandits[id].hidden
-      state.bandits[id] = newBandit
-
+      state.bandits[id] = resetBandit(state.bandits[id], id);
     },
-    resetAll: (state, action) => {
-      state.bandits = initialState(action.payload).bandits;
+    resetAll: (state) => {
+      state.bandits.forEach((d, id) => {
+        state.bandits[id] = resetBandit(d, id);
+      });
     },
     setOnePlaying: (state, action) => {
       console.log("Here!");

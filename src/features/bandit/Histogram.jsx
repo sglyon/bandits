@@ -16,7 +16,7 @@ function Histogram(props) {
     .nice()
     .range([height, 0]);
 
-  const color = "#33ff77";
+  const color = "#374151";
 
   // apply axis in effect
   useEffect(() => {
