@@ -8,7 +8,6 @@ function SparklineBar(props) {
   const xScale = scaleLinear().domain([0, N]).range([0, width]);
   const yScale = scaleLinear().domain([-5, 5]).range([height, 0]);
 
-
   return (
     <div className="sparkline">
       <svg width={width} height={height}>

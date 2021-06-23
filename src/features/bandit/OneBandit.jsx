@@ -44,10 +44,10 @@ function Bandit(props) {
     >
       <div className="flex items-center justify-around">
         <div className="flex w-1/2 justify-around">
-          <span className="w-1/2 text-purple-700 font-medium">mu</span>
+          <span className="w-1/3 text-purple-700 font-medium">mu</span>
           <input
             type="number"
-            className="w-1/2 border border-purple-500 p-0.5"
+            className="w-2/3 border border-purple-500 p-0.5"
             name="mu"
             id="mu"
             defaultValue={mu}

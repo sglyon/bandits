@@ -19,7 +19,7 @@ import { randomNormal } from "d3";
  * @prop {boolean} hidden
  */
 
- const randomMu = () => Math.round(10 * (5 * (Math.random() - 0.5))) / 10
+const randomMu = () => Math.round(10 * (5 * (Math.random() - 0.5))) / 10;
 
 /**
  *
@@ -45,6 +45,9 @@ const standardNormalDraw = randomNormal(0, 1);
  * @typedef BanditState
  * @prop {number} N
  * @prop {BanditData[]} bandits
+ * @prop {number} lastPlayed
+ * @prop {number} epsilon
+ * @prop {boolean} algorithmStepping
  */
 
 /**
@@ -56,9 +59,14 @@ const initialState = (nBandits) => {
   const out = {
     N: nBandits,
     bandits: [...Array(10)].map((_, id) => createNewBandit({ id })),
+    activeAlgorithm: 0,
+    epsilon: 0.98,
+    lastPlayed: undefined,
+    algorithmStepping: false,
   };
   for (let i = 0; i < nBandits; i++) {
     out.bandits[i].hidden = false;
+    out.bandits[i].numbers = [];
   }
   return out;
 };
@@ -129,6 +137,12 @@ export const banditSlice = createSlice({
         state.bandits[id].playing = !state.bandits[id].playing;
       }
     },
+    setStepping: (state) => {
+      state.algorithmStepping = !state.algorithmStepping;
+    },
+    setEpsilon: (state, action) => {
+      state.epsilon = action.payload;
+    },
   },
 });
 
@@ -141,6 +155,8 @@ export const {
   resetAll,
   setOnePlaying,
   setAllPlaying,
+  setStepping,
+  setEpsilon,
 } = banditSlice.actions;
 
 // The function below is called a selector and allows us to select a value from
@@ -149,10 +165,34 @@ export const {
 
 /**
  *
- * @param {*} state
+ * @param {BanditState} state
  * @returns {BanditData[]}
  */
 export const selectBandits = (state) =>
   state.bandit.bandits.filter((x) => !x.hidden);
+
+/**
+ * Selects from store whether the algorithm is currently stepping or not
+ *
+ * @param {BanditState} state
+ * @returns {boolean}
+ */
+export const selectStepping = (state) => state.bandit.algorithmStepping;
+
+/**
+ * Selects epsilon for epsilon greedy algorithm
+ *
+ * @param {BanditState} state
+ * @returns {number}
+ */
+export const selectEpsilon = (state) => state.bandit.epsilon;
+
+/**
+ * Selects number of active Bandits
+ *
+ * @param {BanditState} state
+ * @returns {number}
+ */
+export const selectNBandits = (state) => state.bandit.N;
 
 export default banditSlice.reducer;
