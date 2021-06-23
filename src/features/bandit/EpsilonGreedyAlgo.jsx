@@ -15,8 +15,7 @@ import useInterval from "../../useInterval";
  * @param {EpsilonGreedyProps} props
  */
 function EpsilonGreedyAlgo(props) {
-  const { epsilon, values, onAct, stepping, onSetStepping } =
-    props;
+  const { epsilon, values, onAct, stepping, onSetStepping } = props;
 
   const choose = () => {
     if (Math.random() > epsilon) {
