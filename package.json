@@ -2,6 +2,7 @@
   "name": "bandits",
   "version": "0.1.0",
   "private": true,
+  "homepage": "http://spencerlyon.com/bandits",
   "dependencies": {
     "@craco/craco": "^6.0.0",
     "@reduxjs/toolkit": "^1.1.0",
@@ -21,6 +22,8 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build -f",
     "test": "craco test",
     "eject": "react-scripts eject"
   },
@@ -40,6 +43,8 @@
     ]
   },
   "devDependencies": {
-    "prettier": "^2.3.1"
+    "gh-pages": "^3.2.3",
+    "prettier": "^2.3.1",
+    "serve": "^12.0.0"
   }
 }
